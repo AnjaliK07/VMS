@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskFlow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+
+    <!-- ── Header ─────────────────────────────────────── -->
+    <header class="header">
+      <div class="header-left">
+        <div class="logo">
+          <span class="logo-icon">✦</span>
+          <span class="logo-text">TaskFlow</span>
+        </div>
+        <p class="header-tagline">Stay on top of what matters.</p>
+      </div>
+      <div class="header-right">
+        <div class="progress-widget">
+          <div class="progress-ring-container">
+            <svg class="progress-ring" width="72" height="72" viewBox="0 0 72 72">
+              <circle class="ring-track" cx="36" cy="36" r="30" />
+              <circle class="ring-fill" id="progressCircle" cx="36" cy="36" r="30" />
+            </svg>
+            <div class="progress-text">
+              <span id="progressPercent">0%</span>
+            </div>
+          </div>
+          <div class="progress-label">
+            <span id="completedCount">0</span> of <span id="totalCount">0</span> done
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── Add Task ────────────────────────────────────── -->
+    <section class="add-task-card">
+      <h2 class="section-label">New task</h2>
+      <div class="form-row">
+        <input
+          type="text"
+          id="taskInput"
+          class="task-input"
+          placeholder="What needs to get done?"
+          maxlength="120"
+          autocomplete="off"
+        />
+      </div>
+      <div class="form-meta-row">
+        <div class="form-field">
+          <label class="field-label" for="prioritySelect">Priority</label>
+          <select id="prioritySelect" class="meta-select">
+            <option value="medium">🟡 Medium</option>
+            <option value="high">🔴 High</option>
+            <option value="low">🟢 Low</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="field-label" for="dueDateInput">Due date</label>
+          <input type="date" id="dueDateInput" class="meta-input" />
+        </div>
+        <div class="form-field">
+          <label class="field-label" for="categoryInput">Tag <span class="optional">(optional)</span></label>
+          <input type="text" id="categoryInput" class="meta-input" placeholder="e.g. Work, Personal" maxlength="30" />
+        </div>
+        <button class="add-btn" id="addTaskBtn">
+          <span class="add-btn-icon">+</span>
+          Add task
+        </button>
+      </div>
+    </section>
+
+    <!-- ── Filters & Search ────────────────────────────── -->
+    <section class="filter-bar">
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">
+          All <span class="tab-count" id="countAll">0</span>
+        </button>
+        <button class="filter-tab" data-filter="active">
+          Active <span class="tab-count" id="countActive">0</span>
+        </button>
+        <button class="filter-tab" data-filter="completed">
+          Done <span class="tab-count" id="countDone">0</span>
+        </button>
+      </div>
+      <div class="search-bar">
+        <span class="search-icon">&#9906;</span>
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="Search tasks…"
+        />
+      </div>
+    </section>
+
+    <!-- ── Task List ───────────────────────────────────── -->
+    <section class="task-list-section">
+      <div id="taskList" class="task-list"></div>
+      <div id="emptyState" class="empty-state hidden">
+        <div class="empty-icon">📋</div>
+        <p class="empty-title" id="emptyTitle">Nothing here yet.</p>
+        <p class="empty-sub" id="emptySub">Add a task above to get started.</p>
+      </div>
+    </section>
+
+    <!-- ── Footer ─────────────────────────────────────── -->
+    <footer class="footer">
+      TaskFlow · Frontend v1.0 · <span class="footer-note">Backend integration pending</span>
+    </footer>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
