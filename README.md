@@ -1,44 +1,57 @@
-# TaskFlow
+# VMS — Visitor Management System
 
-A clean, one-page task management app — vanilla HTML, CSS, and JavaScript. No build tools. No frameworks. No dependencies. Push to GitHub and open in a browser.
+A full-featured, single-page Visitor Management System with role-based login, visitor check-in/check-out, and integrated task management. Pure HTML, CSS, and JavaScript — no build tools, no frameworks.
 
 ---
 
 ## Features
 
-- Add tasks with **priority** (High / Medium / Low), **due date**, and **tag**
-- Mark tasks as **done / reopen** with one click
-- **Filter** by All / Active / Done
-- **Search** tasks by title or tag
-- **Progress ring** showing overall completion at a glance
-- Overdue task detection (due date badges turn red)
-- **LocalStorage** persistence — data survives page refreshes
-- Fully **responsive** down to mobile
+### Visitor Management
+- Visitor self check-in with: Name, Phone, Email, Purpose, Host, Company
+- Auto-generated badge ID (e.g. `VMS-2026-1001`)
+- Visitor pass card with check-in time, purpose, host details
+- Self check-out from visitor portal
+- Real-time duration tracking (active visits)
+
+### Admin Dashboard
+- Secure login (username + password)
+- 4 stat cards: Today's visitors, Currently inside, Checked out, Avg. duration
+- Full visitor log table with filters: Today / This Week / All Time
+- Admin can manually check-in, check-out, or delete visitor records
+- Quick "Add Visitor" modal for pre-registration
+- Integrated task management (priority, due date, tags, filters, search)
+
+### General
+- Role-based access: Admin and Visitor portals
+- LocalStorage persistence (tasks and visitors survive page refresh)
+- Fully responsive — works on mobile
+- Zero dependencies, no `npm install`
 
 ---
 
 ## Getting Started
 
-1. Clone the repo and open `index.html` directly in your browser — that's it.
+Open `index.html` directly in a browser.
 
 ```bash
-git clone https://github.com/your-username/taskflow.git
-cd taskflow
-open index.html      # macOS
-# or just double-click index.html on Windows/Linux
+git clone https://github.com/AnjaliK07/VMS.git
+cd VMS
+open index.html
 ```
 
-No `npm install`. No build step. No server required (yet).
+**Default Admin Credentials:**
+- Username: `admin`
+- Password: `admin@123`
 
 ---
 
 ## Project Structure
 
 ```
-taskflow/
-├── index.html   — App markup
-├── style.css    — All styles (CSS custom properties)
-├── app.js       — Task logic + localStorage layer
+VMS/
+├── index.html   — All views (Login, Admin Dashboard, Visitor Portal)
+├── style.css    — Complete stylesheet with CSS custom properties
+├── app.js       — Full app logic (auth, visitor CRUD, task CRUD)
 └── README.md    — This file
 ```
 
@@ -46,27 +59,29 @@ taskflow/
 
 ## Backend Integration
 
-All data operations are isolated into four async functions at the top of `app.js`. Search for `TODO:` to find every spot.
+Every data operation has a `TODO:` comment showing the exact API call to substitute. Search `TODO:` in `app.js` to find all integration points.
 
-| Function        | Current (localStorage)      | Replace with          |
-|-----------------|-----------------------------|-----------------------|
-| `loadTasks()`   | `localStorage.getItem()`    | `GET /api/tasks`      |
-| `createTask()`  | `tasks.unshift(task)`       | `POST /api/tasks`     |
-| `updateTask()`  | `Object.assign(task, patch)`| `PATCH /api/tasks/:id`|
-| `removeTask()`  | `tasks.filter(...)`         | `DELETE /api/tasks/:id`|
-
-Each function is already `async` — swap the body, keep the signature, and the rest of the app just works.
+| Function              | Now (localStorage)       | Replace with                    |
+|-----------------------|--------------------------|---------------------------------|
+| `loadFromStorage()`   | localStorage reads       | `GET /api/visitors`, `GET /api/tasks` |
+| `adminLogin()`        | Hardcoded credential check | `POST /api/auth/login`        |
+| `visitorCheckin()`    | Local array push         | `POST /api/visitors/checkin`    |
+| `adminCheckin(id)`    | Local state update       | `PATCH /api/visitors/:id/checkin` |
+| `adminCheckout(id)`   | Local state update       | `PATCH /api/visitors/:id/checkout` |
+| `deleteVisitor(id)`   | Local array filter       | `DELETE /api/visitors/:id`      |
+| `addTask()`           | Local array push         | `POST /api/tasks`               |
+| `toggleTask(id)`      | Local state update       | `PATCH /api/tasks/:id`          |
+| `deleteTask(id)`      | Local array filter       | `DELETE /api/tasks/:id`         |
 
 ---
 
 ## Customisation
 
-All colours, fonts, spacing, and border-radii are defined as CSS custom properties at the top of `style.css` under `:root { }`. Change the palette there and the whole UI updates.
+All design tokens (colours, fonts, border-radii, shadows) live under `:root { }` at the top of `style.css`. Change the palette there and the entire UI updates.
 
 ---
 
 ## Tech Stack
 
-- HTML5 · CSS3 (custom properties, grid, flexbox) · Vanilla JS (ES2020)
-- Google Fonts: Space Grotesk + DM Sans
-- Zero runtime dependencies
+HTML5 · CSS3 (custom properties, grid, flexbox) · Vanilla JS (ES2020)  
+Google Fonts: Space Grotesk + DM Sans · Zero runtime dependencies

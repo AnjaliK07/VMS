@@ -3,118 +3,332 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TaskFlow</title>
+  <title>VMS — Visitor Management System</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="app">
 
-    <!-- ── Header ─────────────────────────────────────── -->
-    <header class="header">
-      <div class="header-left">
-        <div class="logo">
+  <!-- ══════════════════════════════════════════
+       VIEW 1 — LOGIN
+  ══════════════════════════════════════════ -->
+  <div id="loginView" class="view">
+    <div class="login-page">
+
+      <!-- Brand panel -->
+      <div class="login-brand">
+        <div class="brand-logo">
           <span class="logo-icon">✦</span>
-          <span class="logo-text">TaskFlow</span>
+          <span class="logo-text">VMS</span>
         </div>
-        <p class="header-tagline">Stay on top of what matters.</p>
+        <h1 class="brand-headline">Know who's in.<br>Always.</h1>
+        <p class="brand-sub">A secure, structured way to manage every visitor, every visit — from check-in to check-out.</p>
+        <ul class="brand-features">
+          <li><span class="feat-dot"></span>Instant visitor check-in with badge ID</li>
+          <li><span class="feat-dot"></span>Real-time admin visitor log</li>
+          <li><span class="feat-dot"></span>Check-in / check-out time tracking</li>
+          <li><span class="feat-dot"></span>Integrated task management</li>
+          <li><span class="feat-dot"></span>Role-based access: Admin & Visitor</li>
+        </ul>
+        <div class="brand-footer">
+          Visitor Management System · Frontend v2.0
+        </div>
       </div>
-      <div class="header-right">
-        <div class="progress-widget">
-          <div class="progress-ring-container">
-            <svg class="progress-ring" width="72" height="72" viewBox="0 0 72 72">
-              <circle class="ring-track" cx="36" cy="36" r="30" />
-              <circle class="ring-fill" id="progressCircle" cx="36" cy="36" r="30" />
-            </svg>
-            <div class="progress-text">
-              <span id="progressPercent">0%</span>
+
+      <!-- Auth card -->
+      <div class="login-card">
+        <div class="role-tabs">
+          <button class="role-tab active" data-role="admin">Admin Login</button>
+          <button class="role-tab" data-role="visitor">Visitor Check-in</button>
+        </div>
+
+        <!-- ── Admin form ── -->
+        <div id="adminLoginForm" class="login-form">
+          <div class="form-group">
+            <label class="form-label" for="adminUsername">Username</label>
+            <input type="text" id="adminUsername" class="form-input" placeholder="admin" autocomplete="username" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="adminPassword">Password</label>
+            <input type="password" id="adminPassword" class="form-input" placeholder="••••••••" autocomplete="current-password" />
+          </div>
+          <p class="login-hint">Default credentials: <code>admin</code> / <code>admin@123</code></p>
+          <div id="adminLoginError" class="form-error hidden"></div>
+          <button class="login-btn" id="adminLoginBtn">Login as Admin →</button>
+        </div>
+
+        <!-- ── Visitor check-in form ── -->
+        <div id="visitorCheckinForm" class="login-form hidden">
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label" for="vName">Full Name <span class="req">*</span></label>
+              <input type="text" id="vName" class="form-input" placeholder="Your full name" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="vPhone">Phone <span class="req">*</span></label>
+              <input type="tel" id="vPhone" class="form-input" placeholder="+91 00000 00000" />
             </div>
           </div>
-          <div class="progress-label">
-            <span id="completedCount">0</span> of <span id="totalCount">0</span> done
+          <div class="form-group">
+            <label class="form-label" for="vEmail">Email <span class="opt">(optional)</span></label>
+            <input type="email" id="vEmail" class="form-input" placeholder="you@example.com" />
           </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label" for="vPurpose">Purpose of Visit <span class="req">*</span></label>
+              <select id="vPurpose" class="form-input form-select">
+                <option value="">Select purpose…</option>
+                <option>Meeting</option>
+                <option>Interview</option>
+                <option>Delivery</option>
+                <option>Site Visit</option>
+                <option>Training</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="vHost">Person to Meet <span class="req">*</span></label>
+              <input type="text" id="vHost" class="form-input" placeholder="Host name" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="vCompany">Company / Organisation <span class="opt">(optional)</span></label>
+            <input type="text" id="vCompany" class="form-input" placeholder="Your company" />
+          </div>
+          <div id="visitorCheckinError" class="form-error hidden"></div>
+          <button class="login-btn visitor-btn" id="visitorCheckinBtn">Check In ✓</button>
         </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════
+       VIEW 2 — ADMIN DASHBOARD
+  ══════════════════════════════════════════ -->
+  <div id="adminView" class="view hidden">
+
+    <!-- Top nav -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="logo"><span class="logo-icon">✦</span><span class="logo-text">VMS</span></div>
+        <span class="topbar-divider"></span>
+        <span class="topbar-subtitle">Admin Dashboard</span>
+      </div>
+      <div class="topbar-right">
+        <span class="user-chip">Admin</span>
+        <button class="logout-btn" id="adminLogoutBtn">Logout</button>
       </div>
     </header>
 
-    <!-- ── Add Task ────────────────────────────────────── -->
-    <section class="add-task-card">
-      <h2 class="section-label">New task</h2>
-      <div class="form-row">
-        <input
-          type="text"
-          id="taskInput"
-          class="task-input"
-          placeholder="What needs to get done?"
-          maxlength="120"
-          autocomplete="off"
-        />
-      </div>
-      <div class="form-meta-row">
-        <div class="form-field">
-          <label class="field-label" for="prioritySelect">Priority</label>
-          <select id="prioritySelect" class="meta-select">
-            <option value="medium">🟡 Medium</option>
-            <option value="high">🔴 High</option>
-            <option value="low">🟢 Low</option>
-          </select>
+    <main class="admin-main">
+
+      <!-- Stat cards -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon-wrap" style="background:#EEF2FF;">👥</div>
+          <div>
+            <div class="stat-value" id="statToday">0</div>
+            <div class="stat-label">Today's Visitors</div>
+          </div>
         </div>
-        <div class="form-field">
-          <label class="field-label" for="dueDateInput">Due date</label>
-          <input type="date" id="dueDateInput" class="meta-input" />
+        <div class="stat-card">
+          <div class="stat-icon-wrap" style="background:#D1FAE5;">🟢</div>
+          <div>
+            <div class="stat-value" id="statIn">0</div>
+            <div class="stat-label">Currently Inside</div>
+          </div>
         </div>
-        <div class="form-field">
-          <label class="field-label" for="categoryInput">Tag <span class="optional">(optional)</span></label>
-          <input type="text" id="categoryInput" class="meta-input" placeholder="e.g. Work, Personal" maxlength="30" />
+        <div class="stat-card">
+          <div class="stat-icon-wrap" style="background:#F1F5F9;">✅</div>
+          <div>
+            <div class="stat-value" id="statOut">0</div>
+            <div class="stat-label">Checked Out</div>
+          </div>
         </div>
-        <button class="add-btn" id="addTaskBtn">
-          <span class="add-btn-icon">+</span>
-          Add task
-        </button>
+        <div class="stat-card">
+          <div class="stat-icon-wrap" style="background:#FEF3C7;">⏱</div>
+          <div>
+            <div class="stat-value" id="statAvg">—</div>
+            <div class="stat-label">Avg. Duration</div>
+          </div>
+        </div>
       </div>
-    </section>
 
-    <!-- ── Filters & Search ────────────────────────────── -->
-    <section class="filter-bar">
-      <div class="filter-tabs">
-        <button class="filter-tab active" data-filter="all">
-          All <span class="tab-count" id="countAll">0</span>
-        </button>
-        <button class="filter-tab" data-filter="active">
-          Active <span class="tab-count" id="countActive">0</span>
-        </button>
-        <button class="filter-tab" data-filter="completed">
-          Done <span class="tab-count" id="countDone">0</span>
-        </button>
+      <!-- Visitor Log -->
+      <section class="panel">
+        <div class="panel-header">
+          <div class="panel-header-left">
+            <h2 class="panel-title">Visitor Log</h2>
+            <div class="vtabs" id="visitorFilterTabs">
+              <button class="vtab active" data-vfilter="today">Today</button>
+              <button class="vtab" data-vfilter="week">This Week</button>
+              <button class="vtab" data-vfilter="all">All Time</button>
+            </div>
+          </div>
+          <button class="primary-btn" id="addVisitorBtn">+ Add Visitor</button>
+        </div>
+        <div class="table-wrap">
+          <table class="vtable" id="visitorTable">
+            <thead>
+              <tr>
+                <th>Badge ID</th>
+                <th>Visitor</th>
+                <th>Purpose</th>
+                <th>Host</th>
+                <th>Check-in</th>
+                <th>Check-out</th>
+                <th>Duration</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="visitorTableBody"></tbody>
+          </table>
+          <div id="vtableEmpty" class="table-empty hidden">
+            <span class="empty-icon-sm">📋</span>
+            <p>No visitors found for this period.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Task Management -->
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">Task Management</h2>
+          <span id="taskProgress" class="task-progress-chip">0 of 0 done</span>
+        </div>
+
+        <!-- Add task form -->
+        <div class="add-task-block">
+          <input type="text" id="taskInput" class="task-input" placeholder="What needs to get done?" maxlength="120" autocomplete="off" />
+          <div class="task-meta-row">
+            <div class="form-field-sm">
+              <label class="field-label-sm">Priority</label>
+              <select id="prioritySelect" class="meta-select">
+                <option value="medium">🟡 Medium</option>
+                <option value="high">🔴 High</option>
+                <option value="low">🟢 Low</option>
+              </select>
+            </div>
+            <div class="form-field-sm">
+              <label class="field-label-sm">Due date</label>
+              <input type="date" id="dueDateInput" class="meta-input" />
+            </div>
+            <div class="form-field-sm">
+              <label class="field-label-sm">Tag <span class="opt">(optional)</span></label>
+              <input type="text" id="categoryInput" class="meta-input" placeholder="e.g. Work, Personal" maxlength="30" />
+            </div>
+            <button class="add-btn" id="addTaskBtn"><span class="plus-icon">+</span> Add task</button>
+          </div>
+        </div>
+
+        <!-- Task filter bar -->
+        <div class="task-filter-bar">
+          <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">All <span class="tab-count" id="countAll">0</span></button>
+            <button class="filter-tab" data-filter="active">Active <span class="tab-count" id="countActive">0</span></button>
+            <button class="filter-tab" data-filter="completed">Done <span class="tab-count" id="countDone">0</span></button>
+          </div>
+          <input type="text" id="searchInput" class="search-inline" placeholder="⊙ Search tasks…" />
+        </div>
+
+        <div id="taskList" class="task-list"></div>
+        <div id="emptyState" class="empty-state hidden">
+          <div class="empty-icon">📋</div>
+          <p class="empty-title" id="emptyTitle">No tasks yet.</p>
+          <p class="empty-sub" id="emptySub">Add a task above to get started.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════
+       VIEW 3 — VISITOR PORTAL (post-check-in)
+  ══════════════════════════════════════════ -->
+  <div id="visitorView" class="view hidden">
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="logo"><span class="logo-icon">✦</span><span class="logo-text">VMS</span></div>
       </div>
-      <div class="search-bar">
-        <span class="search-icon">&#9906;</span>
-        <input
-          type="text"
-          id="searchInput"
-          class="search-input"
-          placeholder="Search tasks…"
-        />
+      <button class="logout-btn" id="visitorBackBtn">← New Check-in</button>
+    </header>
+    <div class="visitor-portal-wrap">
+      <div id="visitorPassCard"></div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════
+       MODAL — Add Visitor (Admin)
+  ══════════════════════════════════════════ -->
+  <div id="addVisitorModal" class="modal-overlay hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 class="modal-title">Add New Visitor</h3>
+        <button class="modal-close" id="closeModalBtn" aria-label="Close">✕</button>
       </div>
-    </section>
-
-    <!-- ── Task List ───────────────────────────────────── -->
-    <section class="task-list-section">
-      <div id="taskList" class="task-list"></div>
-      <div id="emptyState" class="empty-state hidden">
-        <div class="empty-icon">📋</div>
-        <p class="empty-title" id="emptyTitle">Nothing here yet.</p>
-        <p class="empty-sub" id="emptySub">Add a task above to get started.</p>
+      <div class="modal-body">
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Full Name <span class="req">*</span></label>
+            <input type="text" id="mName" class="form-input" placeholder="Visitor's full name" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone <span class="req">*</span></label>
+            <input type="tel" id="mPhone" class="form-input" placeholder="+91 00000 00000" />
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Email <span class="opt">(optional)</span></label>
+            <input type="email" id="mEmail" class="form-input" placeholder="visitor@example.com" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Company / Org <span class="opt">(optional)</span></label>
+            <input type="text" id="mCompany" class="form-input" placeholder="Company name" />
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Purpose <span class="req">*</span></label>
+            <select id="mPurpose" class="form-input form-select">
+              <option value="">Select purpose…</option>
+              <option>Meeting</option>
+              <option>Interview</option>
+              <option>Delivery</option>
+              <option>Site Visit</option>
+              <option>Training</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Person to Meet <span class="req">*</span></label>
+            <input type="text" id="mHost" class="form-input" placeholder="Host name" />
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Check-in Status</label>
+            <select id="mStatus" class="form-input form-select">
+              <option value="pending">Pre-registered (Pending)</option>
+              <option value="checked-in">Check In Now</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Scheduled Date</label>
+            <input type="date" id="mDate" class="form-input" />
+          </div>
+        </div>
+        <div id="modalError" class="form-error hidden"></div>
+        <button class="login-btn" id="saveVisitorBtn">Save Visitor</button>
       </div>
-    </section>
-
-    <!-- ── Footer ─────────────────────────────────────── -->
-    <footer class="footer">
-      TaskFlow · Frontend v1.0 · <span class="footer-note">Backend integration pending</span>
-    </footer>
-
+    </div>
   </div>
 
   <script src="app.js"></script>
