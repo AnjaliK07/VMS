@@ -46,6 +46,130 @@ function loadFromStorage() {
 
 
 // ════════════════════════════════════════════════
+//  SEED DEMO DATA (runs once on first load)
+// ════════════════════════════════════════════════
+
+function seedDemoData() {
+  if (state.visitors.length > 0 || state.tasks.length > 0) return;
+
+  const now      = new Date();
+  const todayStr = now.toISOString().slice(0, 10);
+
+  // Build a datetime string for today at h:m
+  function t(h, m) {
+    const d = new Date(now);
+    d.setHours(h, m, 0, 0);
+    return d.toISOString();
+  }
+  function dayOffset(n) {
+    const d = new Date(now);
+    d.setDate(d.getDate() + n);
+    return d.toISOString().slice(0, 10);
+  }
+
+  state.visitors = [
+    {
+      id: 'v_s1', badgeId: 'VMS-2026-1001',
+      name: 'Priya Sharma',      phone: '+91 98765 43210', email: 'priya.s@mckinsey.com',
+      purpose: 'Meeting',        host: 'Prof. Rajesh Kumar', company: 'McKinsey & Co.',
+      status: 'checked-in',      checkIn: t(10,30),  checkOut: null,
+      scheduledDate: null,       createdAt: t(10,28),
+    },
+    {
+      id: 'v_s2', badgeId: 'VMS-2026-1002',
+      name: 'Rahul Mehta',       phone: '+91 87654 32109', email: 'rahul.m@kpmg.com',
+      purpose: 'Interview',      host: 'HR Team',    company: 'KPMG India',
+      status: 'checked-out',     checkIn: t(9,15),   checkOut: t(11,0),
+      scheduledDate: null,       createdAt: t(9,10),
+    },
+    {
+      id: 'v_s3', badgeId: 'VMS-2026-1003',
+      name: 'Dr. Ananya Singh',  phone: '+91 76543 21098', email: 'ananya@iima.ac.in',
+      purpose: 'Training',       host: 'Academic Office', company: 'IIM Ahmedabad',
+      status: 'checked-out',     checkIn: t(8,45),   checkOut: t(13,15),
+      scheduledDate: null,       createdAt: t(8,40),
+    },
+    {
+      id: 'v_s4', badgeId: 'VMS-2026-1004',
+      name: 'Vikram Patel',      phone: '+91 65432 10987', email: null,
+      purpose: 'Delivery',       host: 'Admin Office', company: 'Blue Dart Express',
+      status: 'checked-out',     checkIn: t(11,5),   checkOut: t(11,22),
+      scheduledDate: null,       createdAt: t(11,4),
+    },
+    {
+      id: 'v_s5', badgeId: 'VMS-2026-1005',
+      name: 'Neha Gupta',        phone: '+91 54321 09876', email: 'neha.g@amazon.com',
+      purpose: 'Site Visit',     host: 'Operations Team', company: 'Amazon India',
+      status: 'checked-in',      checkIn: t(11,50),  checkOut: null,
+      scheduledDate: null,       createdAt: t(11,48),
+    },
+    {
+      id: 'v_s6', badgeId: 'VMS-2026-1006',
+      name: 'Sanya Kapoor',      phone: '+91 43210 98765', email: 'sanya.k@bcg.com',
+      purpose: 'Interview',      host: 'Placement Team', company: 'BCG India',
+      status: 'checked-out',     checkIn: t(9,30),   checkOut: t(11,45),
+      scheduledDate: null,       createdAt: t(9,25),
+    },
+    {
+      id: 'v_s7', badgeId: 'VMS-2026-1007',
+      name: 'Arjun Nair',        phone: '+91 32109 87654', email: 'arjun.n@deloitte.com',
+      purpose: 'Meeting',        host: 'Finance Team', company: 'Deloitte India',
+      status: 'pending',         checkIn: null,       checkOut: null,
+      scheduledDate: dayOffset(1),                    createdAt: now.toISOString(),
+    },
+    {
+      id: 'v_s8', badgeId: 'VMS-2026-1008',
+      name: 'Meera Iyer',        phone: '+91 21098 76543', email: 'meera@tcs.com',
+      purpose: 'Meeting',        host: 'Research Team', company: 'TCS Innovation Labs',
+      status: 'checked-out',     checkIn: t(14,0),   checkOut: t(15,30),
+      scheduledDate: null,       createdAt: t(13,55),
+    },
+  ];
+
+  state.tasks = [
+    {
+      id: 't_s1', title: 'Review Q2 vendor contracts and renewal terms',
+      priority: 'high',   dueDate: todayStr,       category: 'Work',
+      completed: false,   createdAt: now.toISOString(),
+    },
+    {
+      id: 't_s2', title: 'Prepare ISCEA certification batch documents for students',
+      priority: 'high',   dueDate: dayOffset(1),   category: 'OIG',
+      completed: false,   createdAt: now.toISOString(),
+    },
+    {
+      id: 't_s3', title: 'Draft Byzantine 2026 post-event report for ISCEA',
+      priority: 'high',   dueDate: dayOffset(2),   category: 'OIG',
+      completed: false,   createdAt: now.toISOString(),
+    },
+    {
+      id: 't_s4', title: 'Update visitor management policy SOP',
+      priority: 'medium', dueDate: dayOffset(4),   category: 'Admin',
+      completed: false,   createdAt: now.toISOString(),
+    },
+    {
+      id: 't_s5', title: 'Follow up with KDL logistics on freight savings analysis',
+      priority: 'medium', dueDate: dayOffset(-1),  category: 'Supply Chain',
+      completed: true,    createdAt: now.toISOString(), completedAt: now.toISOString(),
+    },
+    {
+      id: 't_s6', title: 'Schedule OIG committee meeting agenda for August',
+      priority: 'low',    dueDate: dayOffset(6),   category: 'OIG',
+      completed: false,   createdAt: now.toISOString(),
+    },
+    {
+      id: 't_s7', title: 'Coordinate guest speaker slot for next operations seminar',
+      priority: 'low',    dueDate: null,            category: 'Work',
+      completed: false,   createdAt: now.toISOString(),
+    },
+  ];
+
+  state.badgeCounter = 1008;
+  persist();
+}
+
+
+// ════════════════════════════════════════════════
 //  AUTH
 // ════════════════════════════════════════════════
 
@@ -458,11 +582,12 @@ function renderTaskSection() {
 }
 
 function taskCardHTML(task) {
-  const pLabel = { high:'🔴 High', medium:'🟡 Medium', low:'🟢 Low' }[task.priority] || 'Medium';
+  const pLabel    = { high:'🔴 High', medium:'🟡 Medium', low:'🟢 Low' }[task.priority] || 'Medium';
+  const priClass  = task.completed ? '' : ` pri-${task.priority}`;
   const dateBadge = task.dueDate ? buildDateBadge(task.dueDate, task.completed) : '';
   const tagBadge  = task.category ? `<span class="badge badge-tag">${esc(task.category)}</span>` : '';
   return `
-    <div class="task-card${task.completed ? ' task-done' : ''}">
+    <div class="task-card${task.completed ? ' task-done' : ''}${priClass}">
       <button class="task-checkbox${task.completed ? ' checked' : ''}" onclick="toggleTask('${task.id}')">${task.completed ? '✓' : ''}</button>
       <div class="task-body">
         <span class="task-title">${esc(task.title)}</span>
@@ -572,6 +697,7 @@ function formatDuration(minutes) {
 
 document.addEventListener('DOMContentLoaded', () => {
   loadFromStorage();
+  seedDemoData(); // Populates demo data on first load; remove once backend is wired in
 
   // ── Login ──
   el('adminLoginBtn').addEventListener('click', adminLogin);
